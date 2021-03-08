@@ -1,0 +1,7 @@
+apiVersion: v2
+name: app-base
+description: (App) base
+type: application
+version: v1
+appVersion: v1
+icon: https://dott.pt/pt

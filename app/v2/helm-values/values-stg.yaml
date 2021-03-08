@@ -1,0 +1,16 @@
+# farinha app values
+replicaCount: 2
+
+resources: 
+  limits:
+    cpu: "1000m"
+    memory: "6Gi"
+
+metricsPath: "metrics" 
+
+service:
+  type: ClusterIP  
+  ports:
+    https:
+      containerPort: 443
+      targetPort: 8090

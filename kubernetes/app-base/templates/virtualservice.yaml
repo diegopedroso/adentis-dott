@@ -1,0 +1,74 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  host: {{ .Release.Name }}
+  subsets:
+  - name: version-v1
+    labels:
+      version: v1
+  - name: version-v2
+    labels: 
+      version: v2
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  hosts:
+  - "{{ .Release.Name }}.{{ .Values.hosts }}"
+  gateways:
+  - {{ .Release.Name }}-istio-gateway
+  http:
+    - route:
+      - destination:
+          host: {{ .Release.Name }}
+          port:
+            number: 80
+          subset: version-v2
+        weight: 10
+        headers:
+          response:
+            add:
+              application_version: v2
+        retries:
+          attempts: 5
+          perTryTimeout: 100ms
+          retryOn: retriable-status-codes
+      - destination:
+          host: {{ .Release.Name }}
+          port:
+            number: 80
+          subset: version-v1
+        weight: 90
+        headers:
+          response:
+            add:
+              application_version: v1
+        retries:
+          attempts: 5
+          perTryTimeout: 100ms
+          retryOn: retriable-status-codes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  ports:
+    - name: http-port
+      port: 80
+      targetPort: 8090
+    - name: https-port
+      port: 443
+      targetPort: 8090
+  selector:
+    app: {{ .Release.Name }}

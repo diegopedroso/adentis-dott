@@ -1,0 +1,32 @@
+replicaCount: 2
+
+image:
+  pullPolicy: Always
+
+serviceAccount: 
+  name: default
+  create: false
+
+imagePullSecrets:
+  name: regcred
+
+service:
+  type: ClusterIP  
+  ports:
+    https:
+      containerPort: 443
+      targetPort: 8090
+
+resources: 
+  limits:
+    cpu: 100m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# When using canary deploy
+is_canary: "true"
+canary_label: "true"
+weight_v1: 90
+weight_v2: 10

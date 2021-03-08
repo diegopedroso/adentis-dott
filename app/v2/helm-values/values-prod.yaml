@@ -1,0 +1,23 @@
+# farinha app values
+replicaCount: 2
+
+resources: 
+  limits:
+    cpu: "1000m"
+    memory: "6Gi"
+
+autoscaling:
+  enabled: false
+  minReplicas: 20
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilization: "1500Mi"
+
+metricsPath: "metrics" 
+
+service:
+  type: ClusterIP  
+  ports:
+    https:
+      containerPort: 443
+      targetPort: 8090

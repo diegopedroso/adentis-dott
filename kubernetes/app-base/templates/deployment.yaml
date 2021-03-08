@@ -1,0 +1,76 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      name: {{ .Release.Name }}
+      app: {{ .Release.Name }}
+      version: v1
+  template:
+    metadata:
+      labels:
+        name: {{ .Release.Name }}
+        app: {{ .Release.Name }}
+        version: v1
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.deployment.imagenamev1 }}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "900m"
+            memory: "1Gi"
+          limits:
+            cpu: "900m"
+            memory: "2Gi"
+        ports:
+        - containerPort: 8090
+          name: http-port
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-v2
+  namespace: {{ .Release.Namespace }}
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      name: {{ .Release.Name }}-v2
+      app: {{ .Release.Name }}
+      version: v2
+  template:
+    metadata:
+      labels:
+        name: {{ .Release.Name }}-v2
+        app: {{ .Release.Name }}
+        version: v2
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: {{ .Release.Name }}-v2
+        image: {{ .Values.deployment.imagenamev2 }}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "900m"
+            memory: "1Gi"
+          limits:
+            cpu: "900m"
+            memory: "2Gi"
+        ports:
+        - containerPort: 8090
+          name: http-port      
+      imagePullSecrets:
+        - name: regcred

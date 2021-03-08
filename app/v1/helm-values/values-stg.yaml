@@ -1,0 +1,24 @@
+# app values
+replicaCount: 2
+
+resources:
+  limits:
+    memory: "2Gi"
+    cpu: "900m"
+  requests:
+    memory: "1Gi"
+    cpu: "900m"
+
+autoscaling:
+  enabled: false
+
+deployment:
+  imagenamev1:
+  imagenamev2: 
+
+service:
+  type: ClusterIP  
+  ports:
+    https:
+      containerPort: 443
+      targetPort: 8090

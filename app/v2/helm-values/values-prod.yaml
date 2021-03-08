@@ -1,23 +1,38 @@
-# farinha app values
+# app values
 replicaCount: 2
 
-resources: 
+resources:
   limits:
-    cpu: "1000m"
-    memory: "6Gi"
+    memory: "2Gi"
+    cpu: "900m"
+  requests:
+    memory: "1Gi"
+    cpu: "900m"
 
 autoscaling:
-  enabled: false
-  minReplicas: 20
-  maxReplicas: 20
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilization: "1500Mi"
 
-metricsPath: "metrics" 
-
+deployment:
+  imagenamev1: 
+  imagenamev2: 
+  
 service:
   type: ClusterIP  
   ports:
     https:
       containerPort: 443
       targetPort: 8090
+
+image:
+  pullPolicy: Always
+
+serviceAccount: 
+  name: default
+  create: false
+
+imagePullSecrets:
+  name: regcred

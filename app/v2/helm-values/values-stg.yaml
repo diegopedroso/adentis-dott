@@ -1,12 +1,20 @@
-# farinha app values
+# app values
 replicaCount: 2
 
-resources: 
+resources:
   limits:
-    cpu: "1000m"
-    memory: "6Gi"
+    memory: "2Gi"
+    cpu: "900m"
+  requests:
+    memory: "1Gi"
+    cpu: "900m"
 
-metricsPath: "metrics" 
+autoscaling:
+  enabled: false
+
+deployment:
+  imagenamev1:
+  imagenamev2: 
 
 service:
   type: ClusterIP  

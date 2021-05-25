@@ -1,5 +1,15 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+defaults:
+
+- &tag /.*\/(prod-|stg-|qa-)\d{8}.\d{2}$/
+
+- &tag_only
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: *tag
 # Use a package of configuration called an orb.
 orbs:
   # Declare a dependency on the welcome-orb
@@ -11,3 +21,27 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
       - welcome/run
+
+      - build_and_test:
+          context: deploy-gke
+          <<: *tag_only
+      - approve_deploy:
+          type: approval
+          requires:
+            - build_and_test
+          <<: *tag_only
+      - deploy:
+          context: deploy-gke
+          requires:
+            - approve_deploy
+          <<: *tag_only
+      - approve_rollback:
+          type: approval
+          requires:
+            - deploy
+          <<: *tag_only
+      - rollback:
+          context: deploy-gke
+          requires:
+            - approve_rollback
+          <<: *tag_only

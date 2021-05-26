@@ -13,13 +13,17 @@ spec:
     targetPort: 8080
   type: LoadBalancer
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: helloweb
   labels:
     app: hello
 spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app.kubernetes.io/name: helloweb
   template:
     metadata:
       labels:

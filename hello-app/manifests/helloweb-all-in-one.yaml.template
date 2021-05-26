@@ -7,7 +7,6 @@ metadata:
 spec:
   selector:
     app: hello
-    tier: web
   ports:
   - port: 80
     targetPort: 8080
@@ -23,12 +22,11 @@ spec:
   replicas: 1
   selector:
     matchLabels: 
-      app.kubernetes.io/name: helloweb
+      app: hello
   template:
     metadata:
       labels:
         app: hello
-        tier: web
     spec:
       containers:
       - name: hello-app

@@ -111,8 +111,6 @@ workflows:
     jobs:
       - build
       - deploy:
-          context:
-            - dott-staging
           requires:
             - build
           filters:

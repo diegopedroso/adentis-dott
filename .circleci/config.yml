@@ -4,8 +4,6 @@ defaults: &defaults
     - image: google/cloud-sdk@sha256:126a49cfa2aa6e20d561fa14999bf657bc341efeba04939bd2f612bf843d12a6
 jobs:
   build:
-    context:
-      - dott-staging
     <<: *defaults
     steps:
       - checkout
@@ -57,8 +55,6 @@ jobs:
             - full_docker_image_name
 
   deploy:
-    context:
-      - dott-staging  
     <<: *defaults
     steps:
       - checkout
@@ -113,10 +109,10 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build     
+      - build
       - deploy:
-          context: 
-            - dott-staging         
+          context:
+            - dott-staging
           requires:
             - build
           filters:

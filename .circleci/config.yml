@@ -16,3 +16,14 @@ workflows:
   build-deploy:
     jobs:
       - check-changes
+      - build
+      - approve_deploy:
+          type: approval
+          requires:
+            - build    
+      - deploy:
+          requires:
+            - approve_deploy
+          filters:
+            branches:
+              only: main

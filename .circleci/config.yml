@@ -16,7 +16,6 @@ workflows:
   build-deploy:
     jobs:
       - check-changes
-      - build
       - approve_deploy:
           type: approval
           requires:

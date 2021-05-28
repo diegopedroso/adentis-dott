@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 # latest commit
 LATEST_COMMIT=$(git rev-parse HEAD)
 

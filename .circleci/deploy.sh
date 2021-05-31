@@ -52,7 +52,7 @@ gcloud --quiet container clusters create $GOOGLE_CLUSTER_NAME --num-nodes=1
 else
 gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_NAME
 fi
-FULL_DOCKER_IMAGE_NAME=$(cat workspace/full_docker_image_name)
+FULL_DOCKER_IMAGE_NAME=$(cat full_docker_image_name)
 # Replace DOCKER_IMAGE_NAME placeholder in manifest with actual image name
 KUBE_CONFIG=$(cat APP_NAME/manifests/helloweb-all-in-one.yaml.template | sed "s|DOCKER_IMAGE_NAME|$FULL_DOCKER_IMAGE_NAME|g")
 echo "$KUBE_CONFIG" | kubectl apply -f -

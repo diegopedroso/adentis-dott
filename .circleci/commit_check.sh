@@ -22,6 +22,6 @@ elif [ $FOLDER2_COMMIT = $LATEST_COMMIT ];
         export APP_NAME
         .circleci/build.sh
 else
-     echo "no folders of relevance has changed"
-     circleci-agent step halt
+        echo "no folders of relevance has changed"
+        circleci-agent step halt
 fi

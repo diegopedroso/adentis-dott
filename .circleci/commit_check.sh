@@ -10,16 +10,14 @@ FOLDER2_COMMIT=$(git log -1 --format=format:%H --full-diff hello-app-v2/)
 if [ $FOLDER1_COMMIT = $LATEST_COMMIT ];
     then
         echo "hello-app-v1 has changed"
-        sed -i "s/APP_NAME/hello-app-v1/g" .circleci/build.sh
-        export APP_NAME="hello-app-v1"
-        .circleci/build.sh
+        sed -i "s/APP_NAME/hello-app-v1/g" .circleci/deploy.sh       
+        .circleci/deploy.sh
 elif [ $FOLDER2_COMMIT = $LATEST_COMMIT ];
     then
         echo "hello-app-v2 has changed"
-        sed -i "s/APP_NAME/hello-app-v2/g" .circleci/build.sh
-        export APP_NAME="hello-app-v2"
-        .circleci/build.sh
+        sed -i "s/APP_NAME/hello-app-v2/g" .circleci/deploy.sh       
+        .circleci/deploy.sh
 else
-    echo "no folders of relevance has changed"
-    circleci-agent step halt
+     echo "no folders of relevance has changed"
+     circleci-agent step halt
 fi

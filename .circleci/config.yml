@@ -8,39 +8,12 @@ jobs:
         - image: circleci/python:3.6
     steps:
       - checkout
-      - run:
-          command: |
-              .circleci/commit_check.sh
-
-  build:
-    docker:
-        - image: circleci/python:3.6
-    steps:
-      - checkout
       - setup_remote_docker
       - run:
           command: |
-              .circleci/build.sh
-
-  deploy:
-      <<: *defaults
-      steps:
-      - run:
-          command: |
-              .circleci/deploy.sh
-
+              .circleci/commit_check.sh
 workflows:
   version: 2
   build-deploy:
     jobs:
       - check-changes
-      - build:
-          requires:
-            - check-changes
-      - approve_deploy:
-          type: approval
-          requires:
-            - build    
-      - deploy:
-          requires:
-            - approve_deploy

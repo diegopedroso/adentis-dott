@@ -1,7 +1,6 @@
 #!/bin/bash
 set -xe
 
-# latest commit
 LATEST_COMMIT=$(git rev-parse HEAD)
 
 # latest commit where path/to/folder1 was changed

@@ -39,3 +39,5 @@ circleci step halt
 fi
 
 sed -i "s/APP_NAME/$APP_NAME/g" .circleci/deploy.sh
+echo "Deploy on GKE"
+.circleci/deploy.sh

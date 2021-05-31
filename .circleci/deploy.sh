@@ -44,6 +44,7 @@ set -x
 gcloud auth activate-service-account --key-file gcloud-service-key.json
 gcloud --quiet config set project $GOOGLE_PROJECT_ID
 gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_NAME
 
 FULL_DOCKER_IMAGE_NAME=$(cat full_docker_image_name)
 # Replace DOCKER_IMAGE_NAME placeholder in manifest with actual image name

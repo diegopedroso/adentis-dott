@@ -8,7 +8,6 @@ jobs:
         - image: circleci/python:3.6
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           command: |
               .circleci/commit_check.sh
@@ -16,18 +15,18 @@ jobs:
   build:
       <<: *defaults
       steps:
-        - run:
-            name: Install utils
-            command: |
-                .circleci/build.sh
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+              .circleci/build.sh
 
   deploy:
       <<: *defaults
       steps:
-        - run:
-            name: Install utils
-            command: |
-                .circleci/deploy.sh
+      - run:
+          command: |
+              .circleci/deploy.sh
 
 workflows:
   version: 2
@@ -40,7 +39,7 @@ workflows:
       - approve_deploy:
           type: approval
           requires:
-            - check-changes    
+            - build    
       - deploy:
           requires:
             - approve_deploy

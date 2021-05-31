@@ -13,8 +13,9 @@ jobs:
               .circleci/commit_check.sh
 
   build:
-      <<: *defaults
-      steps:
+    docker:
+        - image: circleci/python:3.6
+    steps:
       - checkout
       - setup_remote_docker
       - run:

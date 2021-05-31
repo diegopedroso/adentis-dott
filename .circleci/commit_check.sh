@@ -11,15 +11,13 @@ if [ $FOLDER1_COMMIT = $LATEST_COMMIT ];
     then
         echo "hello-app-v1 has changed"
         sed -i "s/APP_NAME/hello-app-v1/g" .circleci/build.sh
-        APP_NAME="hello-app-v1"
-        export APP_NAME
+        export APP_NAME="hello-app-v1"
         .circleci/build.sh
 elif [ $FOLDER2_COMMIT = $LATEST_COMMIT ];
     then
         echo "hello-app-v2 has changed"
         sed -i "s/APP_NAME/hello-app-v2/g" .circleci/build.sh
-        APP_NAME="hello-app-v2"
-        export APP_NAME
+        export APP_NAME="hello-app-v2"
         .circleci/build.sh
 else
     echo "no folders of relevance has changed"

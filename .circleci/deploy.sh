@@ -50,11 +50,11 @@ FULL_DOCKER_IMAGE_NAME=$(cat full_docker_image_name)
 KUBE_CONFIG=$(cat APP_NAME/manifests/helloweb-all-in-one.yaml | sed "s|DOCKER_IMAGE_NAME|eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_DOCKER_IMAGE_NAME|g")
 echo "$KUBE_CONFIG" | kubectl apply -f -
 # Wait for deployment to finish
-kubectl rollout status deployment/APP_NAME
-kubectl get pods
+kubectl rollout status deployment/APP_NAME -n APP_NAME
+kubectl get pods -n APP_NAME
 
 # Wait for external ip to be assigned
 sleep 60
-kubectl get service APP_NAME
+kubectl get service APP_NAME -n APP_NAME
 EXTERNAL_IP=$(kubectl get service APP_NAME -o json | jq -r ".status.loadBalancer.ingress[0].ip")
 curl "http://$EXTERNAL_IP"

@@ -44,7 +44,6 @@ To apply the manifest to the cluster run:
 kubectl apply -f application-prod.yaml     
 ```
 
-
 ```bash
 $ curl localhost:8090
 Hello

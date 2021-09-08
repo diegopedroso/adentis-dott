@@ -47,7 +47,7 @@ gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_NAME
 
 FULL_DOCKER_IMAGE_NAME=$(cat full_docker_image_name)
 # Replace DOCKER_IMAGE_NAME placeholder in manifest with actual image name
-KUBE_CONFIG=$(cat APP_NAME/manifests/helloweb-all-in-one.yaml | sed "s|DOCKER_IMAGE_NAME|$FULL_DOCKER_IMAGE_NAME|g")
+KUBE_CONFIG=$(cat APP_NAME/manifests/helloweb-all-in-one.yaml | sed "s|DOCKER_IMAGE_NAME|eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_DOCKER_IMAGE_NAME|g")
 echo "$KUBE_CONFIG" | kubectl apply -f -
 # Wait for deployment to finish
 kubectl rollout status deployment/APP_NAME

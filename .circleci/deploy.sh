@@ -31,7 +31,7 @@ echo "Not main branch; skipping image push.."
 fi
 
 FULL_DOCKER_IMAGE_NAME=$(cat full_docker_image_name)
-docker run -d --rm -p 8080:8080 --name APP_NAME $FULL_DOCKER_IMAGE_NAME
+docker run -d --rm -p 8080:8080 --name APP_NAME eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_DOCKER_IMAGE_NAME
 docker run --network container:APP_NAME appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
 if [ "${CIRCLE_BRANCH}" != "main" ]
 then

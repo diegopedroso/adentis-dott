@@ -56,5 +56,5 @@ kubectl get pods -n APP_NAME
 # Wait for external ip to be assigned
 sleep 60
 kubectl get service APP_NAME -n APP_NAME
-EXTERNAL_IP=$(kubectl get service APP_NAME -o json | jq -r ".status.loadBalancer.ingress[0].ip")
+EXTERNAL_IP=$(kubectl get service APP_NAME -n APP_NAME -o json | jq -r ".status.loadBalancer.ingress[0].ip")
 curl "http://$EXTERNAL_IP"

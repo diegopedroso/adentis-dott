@@ -17,7 +17,7 @@ DOCKER_IMAGE_TAG=${CIRCLE_BRANCH}
 echo "APP_NAME:$DOCKER_IMAGE_TAG" > full_docker_image_name
 fi
 FULL_DOCKER_IMAGE_NAME=$(cat full_docker_image_name)
-docker build -t $FULL_DOCKER_IMAGE_NAME -f APP_NAME/Dockerfile APP_NAME/
+docker build -t eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_DOCKER_IMAGE_NAME -f APP_NAME/Dockerfile APP_NAME/
 
 if [ "${CIRCLE_BRANCH}" == "main" ]
 then
@@ -47,7 +47,7 @@ gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_NAME
 
 FULL_DOCKER_IMAGE_NAME=$(cat full_docker_image_name)
 # Replace DOCKER_IMAGE_NAME placeholder in manifest with actual image name
-KUBE_CONFIG=$(cat APP_NAME/manifests/helloweb-all-in-one.yaml.template | sed "s|DOCKER_IMAGE_NAME|$FULL_DOCKER_IMAGE_NAME|g")
+KUBE_CONFIG=$(cat APP_NAME/manifests/helloweb-all-in-one.yaml | sed "s|DOCKER_IMAGE_NAME|$FULL_DOCKER_IMAGE_NAME|g")
 echo "$KUBE_CONFIG" | kubectl apply -f -
 # Wait for deployment to finish
 kubectl rollout status deployment/APP_NAME

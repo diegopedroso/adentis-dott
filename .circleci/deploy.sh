@@ -58,9 +58,3 @@ sleep 60
 kubectl get service APP_NAME
 EXTERNAL_IP=$(kubectl get service APP_NAME -o json | jq -r ".status.loadBalancer.ingress[0].ip")
 curl "http://$EXTERNAL_IP"
-
-if [ "${DELETE_CLUSTER_AT_END_OF_TEST}" == "true" ]
-then
-kubectl delete service APP_NAME
-gcloud --quiet container clusters delete $GOOGLE_CLUSTER_NAME
-fi

@@ -25,7 +25,7 @@ FULL_DOCKER_IMAGE_NAME=$(cat full_docker_image_name)
 echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > gcloud-service-key.json
 gcloud auth activate-service-account --key-file gcloud-service-key.json
 gcloud --quiet auth configure-docker
-docker push $FULL_DOCKER_IMAGE_NAME
+docker push eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_DOCKER_IMAGE_NAME
 else
 echo "Not main branch; skipping image push.."
 fi

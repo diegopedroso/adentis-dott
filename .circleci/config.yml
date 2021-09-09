@@ -51,7 +51,6 @@ workflows:
   deployment:
     jobs:
       - build_and_test:
-          context: gke
           <<: *tag_only
       - approve_deploy:
           type: approval
@@ -59,7 +58,6 @@ workflows:
             - build_and_test
           <<: *tag_only
       - deploy:
-          context: gke
           requires:
             - approve_deploy
           <<: *tag_only
@@ -69,7 +67,6 @@ workflows:
             - deploy
           <<: *tag_only
       - rollback:
-          context: gke
           requires:
             - approve_rollback
           <<: *tag_only

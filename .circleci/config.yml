@@ -53,6 +53,9 @@ workflows:
           filters:
             tags:
               only: /.*\/(prod-|stg-)\d{8}.\d{2}$ 
+            branches:
+              only:
+                - master  
   deployment:
     jobs:
       - build_and_test:
@@ -82,6 +85,3 @@ workflows:
       - rollback:
           requires:
             - approve_rollback
-          filters:
-            tags:
-              only: /.*\/(prod-|stg-)\d{8}.\d{2}$

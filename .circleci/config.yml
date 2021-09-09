@@ -23,7 +23,7 @@ jobs:
           name: Execute Tests
           command: |
                chmod +x .circleci/common.sh && .circleci/common.sh
-               chmod +x .circleci/run_test.sh && .circleci/run_test.sh
+               .circleci/run_test.sh
 
   deploy:
     docker:

@@ -21,7 +21,7 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-               chmod +x .circleci/common.sh && .circleci/common.sh && source $BASH_ENV
+               .circleci/common.sh && source $BASH_ENV
                chmod +x .circleci/run_test.sh && .circleci/run_test.sh
 
   deploy:

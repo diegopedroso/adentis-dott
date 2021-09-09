@@ -51,22 +51,21 @@ workflows:
   deployment:
     jobs:
       - build_and_test:
-          <<: *tag_only
+
       - approve_deploy:
           type: approval
           requires:
             - build_and_test
-          <<: *tag_only
+
       - deploy:
           requires:
             - approve_deploy
-          <<: *tag_only
+
       - approve_rollback:
           type: approval
           requires:
             - deploy
-          <<: *tag_only
+
       - rollback:
           requires:
             - approve_rollback
-          <<: *tag_only

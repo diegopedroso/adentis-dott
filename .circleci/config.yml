@@ -21,8 +21,8 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-              .circleci/common.sh && source $BASH_ENV
-              .circleci/run_test.sh
+               chmod +x .circleci/common.sh && .circleci/common.sh && source $BASH_ENV
+               chmod +x .circleci/run_test.sh && .circleci/run_test.sh
 
   deploy:
     docker:
@@ -32,7 +32,7 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-              .circleci/deploy.sh
+               chmod +x .circleci/deploy.sh && .circleci/deploy.sh
   rollback:
     docker:
         - image: circleci/python:3.6
@@ -41,7 +41,7 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-              .circleci/rollback.sh                      
+               chmod +x .circleci/rollback.sh && .circleci/rollback.sh                
               
 workflows:
   version: 2

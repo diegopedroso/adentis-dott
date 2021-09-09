@@ -51,12 +51,16 @@ workflows:
     jobs:
       - build_and_test:
           filters:
+            branches:
+              ignore: /.*/      
             tags:
               only:  /^config-test/
   deployment:
     jobs:
       - build_and_test:
           filters:
+            branches:
+              ignore: /.*/           
             tags:
               only:  /^config-test/     
       - approve_deploy:
@@ -64,12 +68,16 @@ workflows:
           requires:
             - build_and_test
           filters:
+            branches:
+              ignore: /.*/           
             tags:
               only:  /^config-test/           
       - deploy:
           requires:
             - approve_deploy
           filters:
+            branches:
+              ignore: /.*/           
             tags:
               only:  /^config-test/               
       - approve_rollback:
@@ -77,6 +85,8 @@ workflows:
           requires:
             - deploy
           filters:
+            branches:
+              ignore: /.*/           
             tags:
               only:  /^config-test/           
       - rollback:

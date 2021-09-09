@@ -50,7 +50,6 @@ workflows:
   run_tests:
     jobs:
       - build_and_test:
-          <<: *tag_only
           filters:
             tags:
               only: /.*\/(prod-|stg-)\d{8}.\d{2}$/

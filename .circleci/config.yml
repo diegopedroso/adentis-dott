@@ -52,7 +52,8 @@ workflows:
       - build_and_test:
           <<: *tag_only
           filters:
-            tag: /.*\/(prod-|stg-)\d{8}.\d{2}$/
+            tags:
+              only: /.*\/(prod-|stg-)\d{8}.\d{2}$/
   deployment:
     jobs:
       - build_and_test:

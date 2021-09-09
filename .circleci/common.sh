@@ -1,5 +1,12 @@
 #!/bin/bash
 
+env_vars() {
+  echo "export APP=$(echo $CIRCLE_TAG | awk -F "(/)" '{print $1}')" >> $BASH_ENV
+  echo "export ENV=$(echo $CIRCLE_TAG | awk -F "(/)" '{print $2}' | awk -F "(-)" '{print $1}')" >> $BASH_ENV
+  echo "export TAG=$(echo $CIRCLE_TAG | awk -F "(/)" '{print $2}')" >> $BASH_ENV
+  source $BASH_ENV
+}
+
 gke_credentials() {
   env_vars
   if [[ "$ENV" == "prod" ]]; then

@@ -42,8 +42,8 @@ jobs:
       - setup_remote_docker
       - run:
           command: |
-               chmod +x .circleci/rollback.sh && .circleci/rollback.sh                
-              
+               chmod +x .circleci/rollback.sh && .circleci/rollback.sh
+                                
 workflows:
   version: 2
   run_tests:

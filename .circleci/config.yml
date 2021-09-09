@@ -34,7 +34,7 @@ jobs:
       - run:
           command: |
                chmod +x .circleci/deploy.sh && .circleci/deploy.sh
-
+               
   rollback:
     docker:
         - image: circleci/python:3.6
@@ -49,9 +49,12 @@ workflows:
   version: 2
   run_tests:
     jobs:
-      - build_and_test
+      - build_and_test:
+          <<: *tag_only
   deployment:
     jobs:
+      - build_and_test:
+          <<: *tag_only
       - approve_deploy:
           type: approval
           requires:

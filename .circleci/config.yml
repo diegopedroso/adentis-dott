@@ -53,9 +53,10 @@ workflows:
           <<: *tag_only
           filters:
             branches:
-              ignore:
-                - *tag
-                - main
+              only: main
+              tags:
+                *tag_only
+
   deployment:
     jobs:
       - build_and_test:

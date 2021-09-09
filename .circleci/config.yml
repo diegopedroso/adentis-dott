@@ -13,14 +13,16 @@ defaults:
 docker:
     - image: google/cloud-sdk@sha256:126a49cfa2aa6e20d561fa14999bf657bc341efeba04939bd2f612bf843d12a6
 jobs:
-  build_and_test:
+  build_and_test:  
     docker:
         - image: circleci/python:3.6
     steps:
       - checkout
       - setup_remote_docker
       - run:
+          name: Execute Tests
           command: |
+               chmod +x .circleci/common.sh 
                .circleci/common.sh && source $BASH_ENV
                chmod +x .circleci/run_test.sh && .circleci/run_test.sh
 
@@ -51,21 +53,22 @@ workflows:
   deployment:
     jobs:
       - build_and_test:
-
+          <<: *tag_only
       - approve_deploy:
           type: approval
           requires:
             - build_and_test
-
+          <<: *tag_only
       - deploy:
           requires:
             - approve_deploy
-
+          <<: *tag_only
       - approve_rollback:
           type: approval
           requires:
             - deploy
-
+          <<: *tag_only
       - rollback:
           requires:
             - approve_rollback
+          <<: *tag_only

@@ -53,9 +53,6 @@ workflows:
           filters:
             tags:
               only:  /^config-test/
-            branches:
-              only:
-                - master
   deployment:
     jobs:
       - build_and_test:

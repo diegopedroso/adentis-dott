@@ -53,9 +53,7 @@ workflows:
           <<: *tag_only
           filters:
             branches:
-              ignore:
-                - *tag
-                - main          
+              only: main
   deployment:
     jobs:
       - build_and_test:
@@ -78,3 +76,8 @@ workflows:
           requires:
             - approve_rollback
           <<: *tag_only
+          filters:
+            branches:
+              ignore:
+                - *tag
+                - main

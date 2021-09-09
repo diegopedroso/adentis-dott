@@ -52,26 +52,36 @@ workflows:
       - build_and_test:
           filters:
             tags:
-              only: /.*\/(prod-|stg-)\d{8}.\d{2}$/
+              only: /.*\/(prod-|stg-)\d{8}.\d{2}$ 
   deployment:
     jobs:
       - build_and_test:
-          <<: *tag_only
+          filters:
+            tags:
+              only: /.*\/(prod-|stg-)\d{8}.\d{2}$      
       - approve_deploy:
           type: approval
           requires:
             - build_and_test
-          <<: *tag_only
+          filters:
+            tags:
+              only: /.*\/(prod-|stg-)\d{8}.\d{2}$            
       - deploy:
           requires:
             - approve_deploy
-          <<: *tag_only
+          filters:
+            tags:
+              only: /.*\/(prod-|stg-)\d{8}.\d{2}$                
       - approve_rollback:
           type: approval
           requires:
             - deploy
-          <<: *tag_only
+          filters:
+            tags:
+              only: /.*\/(prod-|stg-)\d{8}.\d{2}$            
       - rollback:
           requires:
             - approve_rollback
-          <<: *tag_only         
+          filters:
+            tags:
+              only: /.*\/(prod-|stg-)\d{8}.\d{2}$

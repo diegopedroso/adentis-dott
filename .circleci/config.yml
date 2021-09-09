@@ -52,7 +52,7 @@ workflows:
       - build_and_test:
           filters:
             tags:
-              <<: *tag_only
+              only: /.*\/(prod-|stg-)\d{8}.\d{2}$/
   deployment:
     jobs:
       - build_and_test:
@@ -74,4 +74,4 @@ workflows:
       - rollback:
           requires:
             - approve_rollback
-          <<: *tag_only
+          <<: *tag_only         

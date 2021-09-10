@@ -2,8 +2,12 @@
 set -xe
 source ./.circleci/common.sh;
 
+# Load common functions
+
 env_vars
 gke_credentials
+
+# Install dependencies
 
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -12,15 +16,9 @@ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyr
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates gnupg jq kubectl google-cloud-sdk
 
-echo $APP
-echo $ENV
-echo $TAG
+# Build Docker Image
 
-# DOCKER_IMAGE_TAG=$TAG
-# echo "$$APP:$DOCKER_IMAGE_TAG" > full_$APP
-# FULL_$APP=$(cat full_$APP)
 docker build -t eu.gcr.io/$GOOGLE_PROJECT_ID/$APP:$TAG -f apps/$APP/Dockerfile apps/$APP
-
 echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > gcloud-service-key.json
 gcloud auth activate-service-account --key-file gcloud-service-key.json
 gcloud --quiet auth configure-docker

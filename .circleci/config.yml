@@ -52,7 +52,7 @@ workflows:
       - build_and_test:
           filters:    
             tags:
-              only: /^teste*/
+              only: /^teste.*/
             branches:
               ignore: /.*/      
   # deployment:

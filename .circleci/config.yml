@@ -51,8 +51,6 @@ workflows:
   build-and-deploy:
     jobs:
       - build_and_test:
-          requires:
-            - build
           filters:
             tags:
               only: /^v.*/

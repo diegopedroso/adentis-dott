@@ -52,7 +52,7 @@ workflows:
       - build_and_test:
           filters:    
             tags:
-              only: /^diego.*/
+              only: /.*/
             branches:
               ignore: /.*/      
   # deployment:

@@ -52,10 +52,10 @@ workflows:
     jobs:
       - build_and_test:
           filters:
-            tags:
-              only: /.*\/(prod-|stg-|qa-)\d{8}.\d{2}$/
-            branches:
-              ignore: /.*/
+              tags:
+                  only: /.*\/(prod-|stg-|qa-)\d{8}.\d{2}$/
+              branches:
+                  ignore: /.*/
   # deployment:
   #   jobs:
   #     - build_and_test:

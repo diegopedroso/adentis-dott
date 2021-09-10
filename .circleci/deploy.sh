@@ -19,7 +19,7 @@ echo $TAG
 # DOCKER_IMAGE_TAG=$TAG
 # echo "$$APP:$DOCKER_IMAGE_TAG" > full_$APP
 # FULL_$APP=$(cat full_$APP)
-docker build -t eu.gcr.io/$GOOGLE_PROJECT_ID/$APP:$TAG -f apps/$APP/Dockerfile $APP/
+docker build -t eu.gcr.io/$GOOGLE_PROJECT_ID/$APP:$TAG -f apps/$APP/Dockerfile apps/$APP
 
 echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > gcloud-service-key.json
 gcloud auth activate-service-account --key-file gcloud-service-key.json

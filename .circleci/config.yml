@@ -1,6 +1,6 @@
 version: 2
 
-defaults:
+defaults: &defaults
 
 # - &tag /.*\/(prod-|stg-)\d{8}.\d{2}$/
 

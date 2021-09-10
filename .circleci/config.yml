@@ -50,43 +50,33 @@ workflows:
   run_tests:
     jobs:
       - build_and_test:
-          filters:
-            branches:
-              ignore: /.*/      
+          filters:    
             tags:
               only:  /^config-test/
   deployment:
     jobs:
       - build_and_test:
-          filters:
-            branches:
-              ignore: /.*/           
+          filters:     
             tags:
               only:  /^config-test/     
       - approve_deploy:
           type: approval
           requires:
             - build_and_test
-          filters:
-            branches:
-              ignore: /.*/           
+          filters:     
             tags:
-              only:  /^config-test/           
+              only:  /^config-test/          
       - deploy:
           requires:
             - approve_deploy
-          filters:
-            branches:
-              ignore: /.*/           
+          filters:     
             tags:
-              only:  /^config-test/               
+              only:  /^config-test/                
       - approve_rollback:
           type: approval
           requires:
             - deploy
-          filters:
-            branches:
-              ignore: /.*/           
+          filters:     
             tags:
               only:  /^config-test/           
       - rollback:

@@ -2,14 +2,14 @@ version: 2
 
 defaults:
 
-- &tag /.*\/(prod-|stg-)\d{8}.\d{2}$/
+# - &tag /.*\/(prod-|stg-)\d{8}.\d{2}$/
 
-- &tag_only
-  filters:
-    branches:
-      ignore: /.*/
-    tags:
-      only: *tag
+# - &tag_only
+#   filters:
+#     branches:
+#       ignore: /.*/
+#     tags:
+#       only: *tag
 
 docker:
     - image: google/cloud-sdk@sha256:126a49cfa2aa6e20d561fa14999bf657bc341efeba04939bd2f612bf843d12a6
@@ -51,7 +51,11 @@ workflows:
   run_tests:
     jobs:
       - build_and_test:
-          <<: *tag_only
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
   # deployment:
   #   jobs:
   #     - build_and_test:

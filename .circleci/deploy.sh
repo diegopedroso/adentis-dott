@@ -9,20 +9,21 @@ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyr
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates gnupg jq kubectl google-cloud-sdk
 
+echo $APP
+echo $ENV
+echo $TAG
 
-DOCKER_IMAGE_TAG=v$TAG
-echo "$$APP:$DOCKER_IMAGE_TAG" > full_$APP
-FULL_$APP=$(cat full_$APP)
-docker build -t eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_$APP -f $APP/Dockerfile $APP/
+# DOCKER_IMAGE_TAG=$TAG
+# echo "$$APP:$DOCKER_IMAGE_TAG" > full_$APP
+# FULL_$APP=$(cat full_$APP)
+docker build -t eu.gcr.io/$GOOGLE_PROJECT_ID/$APP:$TAG -f apps/$APP/Dockerfile $APP/
 
-FULL_$APP=$(cat full_$APP)
 echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > gcloud-service-key.json
 gcloud auth activate-service-account --key-file gcloud-service-key.json
 gcloud --quiet auth configure-docker
-docker push eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_$APP
+docker push eu.gcr.io/$GOOGLE_PROJECT_ID/$APP:$TAG
 
-FULL_$APP=$(cat full_$APP)
-docker run -d --rm -p 8080:8080 --name $APP eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_$APP
+docker run -d --rm -p 8080:8080 --name $APP eu.gcr.io/$GOOGLE_PROJECT_ID/$APP:$TAG
 docker run --network container:$APP appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
 
 echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > gcloud-service-key.json
@@ -32,9 +33,8 @@ gcloud --quiet config set project $GOOGLE_PROJECT_ID
 gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
 gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_NAME
 
-FULL_$APP=$(cat full_$APP)
 # Replace $APP placeholder in manifest with actual image name
-KUBE_CONFIG=$(cat apps/$APP/kubernetes/$ENV-values.yaml | sed "s|$APP|eu.gcr.io/$GOOGLE_PROJECT_ID/$FULL_$APP|g")
+KUBE_CONFIG=$(cat apps/$APP/kubernetes/$ENV-values.yaml | sed "s|CIRCLE_TAG_REPLACE|$TAG|g")
 echo "$KUBE_CONFIG" | kubectl apply -f -
 # Wait for deployment to finish
 kubectl rollout status deployment/$APP -n $APP

@@ -1,84 +1,87 @@
-version: 2.0
+version: 2
 
+defaults: &defaults
+
+# - &tag /.*\/(prod-|stg-)\d{8}.\d{2}$/
+
+# - &tag_only
+#   filters:
+#     branches:
+#       ignore: /.*/
+#     tags:
+#       only: *tag
+
+docker:
+    - image: google/cloud-sdk@sha256:126a49cfa2aa6e20d561fa14999bf657bc341efeba04939bd2f612bf843d12a6
 jobs:
-    build:
-        docker:
-            - image: node:8
+  build_and_test:  
+    docker:
+        - image: circleci/python:3.6
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Execute Tests
+          command: |
+               chmod +x .circleci/common.sh && .circleci/common.sh
+               .circleci/run_test.sh
 
-        environment:
-            COVERALLS_SERVICE_JOB_ID: $CIRCLE_BUILD_NUM
-            COVERALLS_GIT_COMMIT: $CIRLE_SHA1
-            COVERALLS_PARALLEL: true
-
-        steps:
-            - checkout
-            - run: echo $CIRCLE_SHA1 > .circle-sha
-            - run: echo "Install Dependencies"
-            - run: npm i
-            - run: npm i -C www
-            - run: echo "Run Tests"
-            - run: npm test
-            - run: if [ $CIRCLE_BRANCH = 'master' ]; then npm run coverage; fi
-            - run: echo "Build"
-            - run: npm run build
-            - save_cache:
-                key: project-{{ checksum ".circle-sha" }}
-                paths:
-                    - ~/project
-
-    deploy:
-        docker:
-            - image: node:8
-
-        steps:
-            - run: echo $CIRCLE_SHA1 > .circle-sha
-            - restore_cache:
-                keys:
-                    - project-{{ checksum ".circle-sha" }}
-            - run:
-                command: |
-                    echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
-                    npm publish dist
-                    npm run deploy-docs
-
-    deploy-docs:
-        docker:
-            - image: node:8
-
-        steps:
-            - run: echo $CIRCLE_SHA1 > .circle-sha
-            - restore_cache:
-                keys:
-                    - project-{{ checksum ".circle-sha" }}
-            - run:
-                command: |
-                    npm run deploy-docs
-                    
+  deploy:
+    docker:
+        - image: circleci/python:3.6
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+               chmod +x .circleci/deploy.sh && .circleci/deploy.sh
+               
+  rollback:
+    docker:
+        - image: circleci/python:3.6
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+               chmod +x .circleci/rollback.sh && .circleci/rollback.sh
+                                
 workflows:
-    version: 2
-
-    build_and_deploy:
-        jobs:
-            - build:
-                filters:
-                    branches:
-                        ignore: /.*/
-                    tags:
-                        only: /.*\/(prod-|stg-|qa-)\d{8}.\d{2}$/
-            - deploy:
-                requires:
-                    - build
-                filters:
-                    branches:
-                        ignore: /.*/
-                    tags:
-                        only: /.*\/(prod-|stg-|qa-)\d{8}.\d{2}$/
-
-            - deploy-docs:
-                requires:
-                    - deploy
-                filters:
-                    branches:
-                        ignore: /.*/
-                    tags:
-                        only: /\d+(\.\d+){2}/
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build_and_test:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: main
+  # deployment:
+  #   jobs:
+  #     - build_and_test:
+  #         filters:     
+  #           tags:
+  #             only:  /^config-test/     
+  #     - approve_deploy:
+  #         type: approval
+  #         requires:
+  #           - build_and_test
+  #         filters:     
+  #           tags:
+  #             only:  /^config-test/          
+  #     - deploy:
+  #         requires:
+  #           - approve_deploy
+  #         filters:     
+  #           tags:
+  #             only:  /^config-test/                
+  #     - approve_rollback:
+  #         type: approval
+  #         requires:
+  #           - deploy
+  #         filters:     
+  #           tags:
+  #             only:  /^config-test/           
+  #     - rollback:
+  #         requires:
+  #           - approve_rollback

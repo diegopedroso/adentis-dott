@@ -44,7 +44,7 @@ kubectl rollout status deployment/$APP -n $APP
 kubectl get pods -n $APP
 
 # Wait for external ip to be assigned
-sleep 60
+sleep 30
 kubectl get service $APP -n $APP
 EXTERNAL_IP=$(kubectl get service $APP -n $APP -o json | jq -r ".status.loadBalancer.ingress[0].ip")
 curl "http://$EXTERNAL_IP"

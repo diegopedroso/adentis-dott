@@ -53,7 +53,7 @@ workflows:
       - build_and_test:
           filters:
               tags:
-                  only: /.*\/(prod-|stg-|qa-)\d{8}.\d{2}$/
+                  only: /.*/
               branches:
                   ignore: /.*/
   # deployment:

@@ -54,6 +54,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
   # deployment:
   #   jobs:
   #     - build_and_test:

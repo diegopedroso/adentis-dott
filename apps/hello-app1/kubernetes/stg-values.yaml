@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: hello-app-v1
+  name: hello-app1
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: hello-app-v1
-  namespace: hello-app-v1
+  namespace: hello-app1
   labels:
     app: hello-app-v1
 spec:
@@ -22,7 +22,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-app-v1
-  namespace: hello-app-v1
+  namespace: hello-app1
   labels:
     app: hello-app-v1
 spec:

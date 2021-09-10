@@ -2,7 +2,6 @@
 set -xe
 
 source ./.circleci/common.sh;
-source ./.circleci/deploy.sh;
 env_vars
 
 gke_credentials

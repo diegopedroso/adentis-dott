@@ -48,14 +48,16 @@ jobs:
                                 
 workflows:
   version: 2
-  run_tests:
+  build-and-deploy:
     jobs:
       - build_and_test:
+          requires:
+            - build
           filters:
-              tags:
-                only: /.*/
-              branches:
-                ignore: /.*/
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
   # deployment:
   #   jobs:
   #     - build_and_test:

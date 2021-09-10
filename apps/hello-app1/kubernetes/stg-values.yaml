@@ -37,6 +37,6 @@ spec:
     spec:
       containers:
       - name: hello-app1
-        image: eu.gcr.io/dott-198115:CIRCLE_TAG_REPLACE
+        image: eu.gcr.io/dott-198115/hello-app1:CIRCLE_TAG_REPLACE
         ports:
         - containerPort: 8080

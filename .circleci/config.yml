@@ -41,7 +41,7 @@ jobs:
       - slack/notify:
           color: '#42E2F4'
           title: STARTED Dott Deployment
-          message: ':grau: ${APP}/${TAG}'
+          message: ':catjam: ${APP}/${TAG}'
           author_name: '${CIRCLE_USERNAME}'
           include_project_field: false
           include_job_number_field: false

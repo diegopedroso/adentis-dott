@@ -24,7 +24,7 @@ jobs:
           name: Execute Tests
           command: |
                chmod +x .circleci/common.sh && .circleci/common.sh
-               .circleci/run_test.sh
+               .circleci/run_test.sh              
 
   deploy:
     docker:
@@ -35,6 +35,28 @@ jobs:
       - run:
           command: |
                chmod +x .circleci/deploy.sh && .circleci/deploy.sh
+      - slack/notify:
+          color: '#42E2F4'
+          title: STARTED Dott Deployment
+          message: ':grau: ${APP}/${TAG}'
+          author_name: '${CIRCLE_USERNAME}'
+          include_project_field: false
+          include_job_number_field: false
+          webhook: https://hooks.slack.com/services/${SLACK_WEBHOOK}
+      - slack/notify:
+          color: '#1CBF43'
+          title: SUCCESS Dott Deployment
+          message: ':rocket: ${APP}/${TAG}'
+          author_name: '${CIRCLE_USERNAME}'
+          include_project_field: false
+          include_job_number_field: false
+          webhook: https://hooks.slack.com/services/${SLACK_WEBHOOK}
+      - slack/status:
+          fail_only: true
+          failure_message: ':shit: Deployment Failed!  ${APP}/${TAG}  -  Author Name: ${CIRCLE_USERNAME}'
+          include_job_number_field: false
+          include_project_field: false
+          webhook: https://hooks.slack.com/services/${SLACK_WEBHOOK}               
                
   rollback:
     docker:
